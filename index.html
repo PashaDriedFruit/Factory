@@ -687,7 +687,7 @@ input[type=checkbox]{width:16px;height:16px;accent-color:var(--acc);cursor:point
    security. Keep this file in a PRIVATE repository. If the token is ever
    exposed, create a new one in Airtable and paste it here.
    ─────────────────────────────────────────────────────────────────────────── */
-const AIRTABLE_TOKEN = 'PASTE_AIRTABLE_TOKEN_HERE';
+const AIRTABLE_TOKEN = 'pat8fSMhjXD1Cjkml.0f6081094b0bf3762ff2bc9d9751335f70ce3a409b6984b35b303ee9c992b5f6';
 const UNLOCK_WORD    = 'pasha';
 const UNLOCK_DAYS    = 30;      // how long a device stays unlocked
 
@@ -2617,7 +2617,7 @@ function showGate(msg){
 
 // Proves the embedded token still works and can still see this base.
 async function checkToken(){
-  if(!AIRTABLE_TOKEN || AIRTABLE_TOKEN==='PASTE_AIRTABLE_TOKEN_HERE')
+  if(!AIRTABLE_TOKEN || AIRTABLE_TOKEN==='pat8fSMhjXD1Cjkml.0f6081094b0bf3762ff2bc9d9751335f70ce3a409b6984b35b303ee9c992b5f6')
     return {ok:false,msg:'This copy has no Airtable token in it yet. Whoever set it up needs to paste one at the top of the file.'};
   let r;
   try{
