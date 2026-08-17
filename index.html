@@ -91,10 +91,16 @@ nav{background:white;border-bottom:1px solid var(--border);padding:0 28px;displa
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
 @media(max-width:1000px){.two-col{grid-template-columns:1fr;}}
 .panel{background:white;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px;}
-.panel-hdr{padding:13px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-.panel-ttl{font-size:9px;letter-spacing:3px;text-transform:uppercase;font-weight:700;color:var(--text-light);}
+/* Panel headers carry the brand green on a pale tint so each widget reads as a distinct
+   block — the old light-grey title disappeared against the table headers below it. */
+.panel-hdr{padding:13px 20px;border-bottom:1px solid var(--acc-muted);background:var(--acc-pale);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.panel-ttl{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;color:var(--acc);}
 .panel-bod{padding:18px 20px;}
 .panel-bod.flush{padding:0 20px 14px;}
+/* Section label inside a panel that holds more than one table. */
+.sub-hdr{display:flex;justify-content:space-between;align-items:baseline;padding:10px 2px 6px;
+  font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--acc);}
+.sub-hdr .sec-sub{text-transform:none;letter-spacing:0;font-weight:400;}
 
 /* Search box — a magnifier and a clear button, so it never reads as a filter dropdown */
 .search{position:relative;display:inline-flex;align-items:center;}
@@ -221,19 +227,39 @@ table.dt th.grp-end,table.dt td.grp-end{border-right:1px solid var(--acc-muted);
 /* BARS */
 .bars{display:flex;flex-direction:column;gap:11px;}
 .bar-row{display:flex;align-items:center;gap:10px;}
+/* Product grouping inside the Packed-vs-Sales table */
+table.dt tr.grp-hdr td{font-size:9px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;
+  color:var(--text-mid);background:var(--grey);padding:7px 8px;border-bottom:1px solid var(--border);}
+table.dt tbody tr.grp-hdr:hover td{background:var(--grey);}
+table.dt th .th-sub{display:block;font-size:8px;font-weight:500;letter-spacing:.6px;color:var(--text-light);text-transform:none;}
+table.dt tr.grp-sub td{font-size:11px;font-weight:700;color:var(--text-mid);border-top:1px solid var(--border);}
+table.dt tr.grp-sub td:first-child{font-size:9px;letter-spacing:1.2px;text-transform:uppercase;}
+table.dt tbody tr.grp-hdr td,table.dt tbody tr.grp-sub td{background:var(--grey);}
+/* Divider between the supply columns and the demand columns. */
+table.dt th.col-split,table.dt td.col-split{border-left:2px solid var(--border);}
+/* Roll-up column — a subtotal of its neighbours, so it must not read as another stage. */
+table.dt th.col-roll,table.dt td.col-roll{background:var(--grey);font-weight:700;
+  border-left:1px solid var(--border);border-right:1px solid var(--border);}
+table.dt tbody tr:nth-child(even) td.col-roll,table.dt tbody tr:hover td.col-roll{background:var(--grey);}
+/* Spacer between product blocks — must not pick up the zebra or hover styling. */
+table.dt tbody tr.grp-gap td,table.dt tbody tr.grp-gap:hover td{height:14px;padding:0;border:none;background:transparent;}
 .bar-lbl{font-size:11px;color:var(--text-mid);width:150px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;}
 .bar-track{flex:1;height:5px;background:var(--grey);border-radius:3px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:3px;background:var(--acc);transition:width .8s cubic-bezier(.4,0,.2,1);}
 .bar-val{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-mid);width:82px;text-align:right;flex-shrink:0;}
 /* PACKING TRACKER */
-.pack-daily{display:flex;align-items:flex-end;gap:8px;height:180px;padding:22px 4px 0;position:relative;border-bottom:1px solid var(--line);}
-.pack-goal{position:absolute;left:0;right:0;border-top:1px dashed var(--acc);pointer-events:none;}
-.pack-goal .pg-lbl{position:absolute;right:0;top:-16px;font-size:10px;color:var(--acc);font-family:'DM Mono',monospace;font-weight:600;background:var(--bg,#fff);padding:0 4px;}
-.pack-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0;}
-.pack-col .pc-bar{width:70%;max-width:34px;border-radius:4px 4px 0 0;background:var(--acc);transition:height .7s cubic-bezier(.4,0,.2,1);position:relative;}
-.pack-col .pc-bar.met{background:#1e7e34;}
-.pack-col .pc-val{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-mid);margin-bottom:4px;white-space:nowrap;}
-.pack-col .pc-lbl{font-size:10px;color:var(--text-mid);margin-top:6px;white-space:nowrap;}
+/* Horizontal bars: 14 date labels never fit across a half-width panel, and stacking the
+   days lets each row carry its full date and value without rotating text. */
+.pack-daily{position:relative;padding:18px 0 4px;}
+.pack-goal{position:absolute;top:0;bottom:4px;border-left:1px dashed var(--acc);pointer-events:none;}
+.pack-goal .pg-lbl{position:absolute;left:3px;top:0;font-size:9px;color:var(--acc);font-family:'DM Mono',monospace;font-weight:600;background:#fff;padding:0 3px;white-space:nowrap;}
+.pack-row{display:flex;align-items:center;gap:8px;height:20px;}
+.pack-row .pc-lbl{width:56px;flex-shrink:0;font-size:10px;color:var(--text-mid);white-space:nowrap;text-align:right;}
+.pack-row .pc-track{flex:1;min-width:0;height:11px;background:var(--grey);border-radius:3px;overflow:hidden;}
+.pack-row .pc-bar{height:100%;border-radius:3px;background:var(--acc);transition:width .7s cubic-bezier(.4,0,.2,1);}
+.pack-row .pc-bar.met{background:#1e7e34;}
+.pack-row .pc-val{width:46px;flex-shrink:0;font-family:'DM Mono',monospace;font-size:10px;color:var(--text-mid);text-align:right;}
+.pack-row.zero .pc-lbl,.pack-row.zero .pc-val{color:var(--text-light);}
 .pack-weekly{display:flex;gap:14px;flex-wrap:wrap;margin-top:16px;}
 .pack-wk{flex:1;min-width:120px;border:1px solid var(--line);border-radius:8px;padding:10px 12px;}
 .pack-wk .pw-lbl{font-size:10px;color:var(--text-mid);text-transform:uppercase;letter-spacing:.04em;}
@@ -456,33 +482,41 @@ input[type=checkbox]{width:16px;height:16px;accent-color:var(--acc);cursor:point
       </select>
       <div class="sec-sub" id="dash-sub">—</div></div>
     <div class="stats" id="dash-stats"></div>
+    <!-- One widget: both halves answer the same question (what leaves in the next 7 days),
+         so they share a header. The two tables keep their own bodies because the last
+         column differs (Due In vs Status). -->
     <div class="panel">
-      <div class="panel-hdr"><div class="panel-ttl">Not Picked &amp; Shipping &lt;7 Days</div><div class="sec-sub" id="sales7-sub">—</div></div>
-      <div class="panel-bod flush"><div class="tw"><table class="dt" style="table-layout:fixed;width:100%">
-        <colgroup><col style="width:12%"><col style="width:33%"><col style="width:15%"><col style="width:13%"><col style="width:11%"><col style="width:8%"><col style="width:8%"></colgroup>
-        <thead><tr><th>Ship</th><th>Buyer Details</th><th>Product</th><th>Grade</th><th class="num">Qty</th><th class="num">Picked kg</th><th style="padding-left:36px">Due In</th></tr></thead>
-        <tbody id="sales7-body"></tbody></table></div></div>
+      <div class="panel-hdr"><div class="panel-ttl">Shipping &lt; 7 Days</div><div class="sec-sub" id="ship7-sub">—</div></div>
+      <div class="panel-bod flush">
+        <div class="sub-hdr"><span>Not Picked</span><span class="sec-sub" id="sales7-sub">—</span></div>
+        <div class="tw"><table class="dt" style="table-layout:fixed;width:100%">
+          <colgroup><col style="width:12%"><col style="width:33%"><col style="width:15%"><col style="width:13%"><col style="width:11%"><col style="width:8%"><col style="width:8%"></colgroup>
+          <thead><tr><th>Ship</th><th>Buyer Details</th><th>Product</th><th>Grade</th><th class="num">Qty</th><th class="num">Picked kg</th><th style="padding-left:36px">Due In</th></tr></thead>
+          <tbody id="sales7-body"></tbody></table></div>
+        <div class="sub-hdr"><span>Picked &amp; Ready to Ship</span><span class="sec-sub" id="ready-sub">—</span></div>
+        <div class="tw"><table class="dt" style="table-layout:fixed;width:100%">
+          <colgroup><col style="width:12%"><col style="width:33%"><col style="width:15%"><col style="width:13%"><col style="width:11%"><col style="width:8%"><col style="width:8%"></colgroup>
+          <thead><tr><th>Ship</th><th>Buyer Details</th><th>Product</th><th>Grade</th><th class="num">Qty</th><th class="num">Picked kg</th><th style="padding-left:36px">Status</th></tr></thead>
+          <tbody id="ready-body"></tbody></table></div>
+      </div>
     </div>
+    <!-- Full width: the stage reconciliation is 7 numeric columns and was being
+         squeezed into half the page. Quality Flags now sits beneath it. -->
     <div class="panel">
-      <div class="panel-hdr"><div class="panel-ttl">Picked &amp; Ready to Ship</div><div class="sec-sub" id="ready-sub">—</div></div>
-      <div class="panel-bod flush"><div class="tw"><table class="dt" style="table-layout:fixed;width:100%">
-        <colgroup><col style="width:12%"><col style="width:33%"><col style="width:15%"><col style="width:13%"><col style="width:11%"><col style="width:8%"><col style="width:8%"></colgroup>
-        <thead><tr><th>Ship</th><th>Buyer Details</th><th>Product</th><th>Grade</th><th class="num">Qty</th><th class="num">Picked kg</th><th style="padding-left:36px">Status</th></tr></thead>
-        <tbody id="ready-body"></tbody></table></div></div>
+      <div class="panel-hdr"><div class="panel-ttl">Stock Pipeline &amp; Commitments</div></div>
+      <div class="panel-bod"><div id="mix-bars"></div></div>
     </div>
+    <!-- Side by side: neither of these needs full width, and pairing them keeps the
+         dashboard from becoming one long single column. -->
     <div class="two-col">
-      <div class="panel">
-        <div class="panel-hdr"><div class="panel-ttl">Sellable Stock by Grade</div><div class="sec-sub" id="mix-tot">—</div></div>
-        <div class="panel-bod"><div class="bars" id="mix-bars"></div></div>
-      </div>
-      <div class="panel">
-        <div class="panel-hdr"><div class="panel-ttl">Quality Flags</div></div>
-        <div class="panel-bod flush"><div class="tw"><table class="dt"><tbody id="attn-body"></tbody></table></div></div>
-      </div>
+    <div class="panel" style="margin-bottom:0">
+      <div class="panel-hdr"><div class="panel-ttl">Quality Flags</div></div>
+      <div class="panel-bod flush"><div class="tw"><table class="dt"><tbody id="attn-body"></tbody></table></div></div>
     </div>
-    <div class="panel">
+    <div class="panel" style="margin-bottom:0">
       <div class="panel-hdr"><div class="panel-ttl">Cartons Packed — Tons per Day</div><div class="sec-sub" id="pack-trk-sub">Goal 2.0 T/day</div></div>
       <div class="panel-bod"><div id="pack-daily" class="pack-daily"></div><div id="pack-weekly" class="pack-weekly"></div></div>
+    </div>
     </div>
     <div class="panel">
       <div class="panel-hdr"><div class="panel-ttl">Recent Process Runs</div></div>
@@ -1201,6 +1235,7 @@ const T = {
   sales:     'tblX9vNCQ54srgFxS',
   drying:    'tblHrQHuLbg59jdiX',
   lists:     'tblXf8prsjmRyTJlG',
+  grades:    'tblSVjsmUABu309jR',   // processing vocabulary — link target for the Grade Link fields
 };
 
 const F = {
@@ -1216,6 +1251,7 @@ const F = {
   dispatchedKg:'fldZUgZcuMuf6Vgdx', availableKg:'fld2wTQelUeRvWmWv', daysInStore:'fld6MQagwzbiHvwsE',
   origin:'fldzcyYedNFI3U3cy', runsProducing:'fldXPLV1MeotGJ2PI',
   gradeGroup:'fldCOkLzvxjaFxUmP', intakeCost:'fld8ugmE3ruNsC90K', stockSrcDrying:'fldYFNMmjJCxHTGnA',
+  gradeLink:'fldEsiDSt4JhCaVYp',        // → Grades. Authoritative grade; `grade` select is the mirror.
   // Cost Settings
   cItem:'fldLNViTyMsJdbCgN', cType:'fldabw4coGBOckoM2', cApplies:'fldzHKel0b1dTZ8jM',
   cRate:'fldNDLq5wXvIHhh1G', cStage:'fldy24sEoMvet6nkP', cActive:'fld61at1gqaZtL2hw',
@@ -1239,6 +1275,7 @@ const F = {
   lPacks:'fldPrzsqmoBwqdGSk', lPerPack:'fldiTCT8BiZUdSlRi', lTotal:'fld7D2kOowqnOytXh',
   lTare:'fldwAaDUA6oeb758d', lGross:'fldrZGnpKdYPxx4Wv',
   lDispatch:'fld760agPjoQDDwMe', lStock:'fldnu5VOpSzpUBTKD',
+  lGradeLink:'fldIJuzOkZ7LRZBy7',       // → Grades
   // Purchases
   pRef:'fldJYlQYIyUVAaiYe', pSupplier:'fldqVQlD5R5X0h2kG', pInvoice:'fldtGAUQkioo0MVqN',
   pProduct:'fldF5gcEQCa7BoM1W', pGrade:'fldXF65jG8fBscTDG', pCrop:'fldBWE9aJ2kHOoEdX',
@@ -1260,6 +1297,7 @@ const F = {
   slSelected:'fldkh3cCK32U2Vynx', slCreated:'fldKuoi7O9QZvQAC7', slPlRef:'fldk3QnIQH5WPs8jO',
   slPushedDate:'fld9lTF8RvHmgIptb', slComments:'fldRsAbRcMWqUgdt7', slCurrency:'fldDuIITukIQkePgx',
   slDispLink:'flduFVuFwHKap0NlT',
+  slGradeLink:'fldxIqaxpByAc8VG0',      // → Grades
   // Drying
   drgRef:'fldkjwCJY6fZ7tkMQ', drgSupplier:'fld8FdjQLIRIGSp1x', drgInvoice:'fldaVmmSEjyN6cImP',
   drgProduct:'fldYWIPkLFfqibf9K', drgGrade:'fldE17DzlLxqImYFZ', drgCrop:'fldbCM0Ma5kJg2NTE',
@@ -1269,6 +1307,9 @@ const F = {
   // Lists (managed dropdown options)
   lstName:'fldkgk8zh2ZLqF3Mu', lstType:'fldpwepN43ST6kvX1', lstActive:'fldaaSIUyWwBKwjwb',
   lstProduct:'fldbZ2zMCQT4OIBLM', lstOrder:'fldx21s7Ac1fCXj63',
+  // Grades (processing vocabulary — the link target, NOT the dropdown source; see grdId())
+  grdName:'fldkUVaenYZ6BVXzt', grdProduct:'fldlRjVqhxzIgHOr5', grdActive:'fldMj1sMzzEAtT1Gv',
+  grdOrder:'fldAF2I188Tjy7v40',
 };
 
 // Grade vocabulary — order matters for the output grid and reports
@@ -1281,6 +1322,67 @@ const OUT_GRADES = GRADES.slice(1);
 const OUT_F = ['fldfkOCbmQFEPhnmq','fldrIL7xukynZUoni','fldGFXiYEFXgy6ZQu','fld080hkjVud5jB7d',
   'fldRSxkv6kt0Qqars','fldqIxqprbBfsmdeo','fldr6CX3DCO8B8KyG','fldR8U8RqSM8odxua',
   'fldmVFQpPmWMxFalh','fldZ8adBx4r6tv4e2','fldXUBpxaMudPwnDg','fldH82voTFouufGTL','fldSiZfNTMge4yUyr'];
+
+// --- Grade Link translation layer -------------------------------------------------
+// The Grades table (T.grades) is the *processing* vocabulary and is the link target for
+// Stock / Sales / Dispatch Lines "Grade Link". The dashboard's dropdowns keep coming from
+// the Lists table (570 trading grades) — see gradeRecs() below — so a grade the user picks
+// may legitimately have no Grades record. In that case we simply leave the link empty and
+// the singleSelect mirror carries the name. NEVER auto-create Grades records from here:
+// that would silently inflate the processing vocabulary with trading-only grade names.
+let GRADE_ID={}, GRADE_NAME={};
+const normGrade=s=>String(s||'').toLowerCase().replace(/[-,]/g,' ').replace(/\s+/g,' ').trim();
+function buildGradeIndex(){
+  GRADE_ID={}; GRADE_NAME={};
+  (D.grades||[]).forEach(r=>{
+    const n=getFields(r)[F.grdName]||''; if(!n) return;
+    GRADE_NAME[r.id]=n;
+    const k=normGrade(n); if(!(k in GRADE_ID)) GRADE_ID[k]=r.id;   // first wins, so a later duplicate can't steal the key
+  });
+}
+// Grades record id for a grade name, or null when this is a trading-only grade.
+function grdId(name){ return GRADE_ID[normGrade(name)]||null; }
+// Value to write into a Grade Link field. [] deliberately CLEARS a stale link rather than
+// leaving it pointing at the previous grade.
+function gradeLinkVal(name){ const id=grdId(name); return id?[id]:[]; }
+// Read a grade off a record, link first. `f` is the getFields() object.
+function gradeOf(f, selFld, linkFld){
+  const l=f[linkFld];
+  if(Array.isArray(l) && l.length){
+    const first=l[0];
+    return (first && (first.name || GRADE_NAME[first.id||first])) || '';
+  }
+  return f[selFld]||'';
+}
+const stockGrade = f=>gradeOf(f, F.grade,   F.gradeLink);
+const lineGrade  = f=>gradeOf(f, F.lGrade,  F.lGradeLink);
+const saleGrade  = f=>gradeOf(f, F.slGrade, F.slGradeLink);
+
+// Make the Grade Link authoritative for READS without touching the ~50 places that read the
+// singleSelect. Straight after load we overwrite each cached record's select value with the
+// name off its link, in memory only — nothing is written back to Airtable. Where the two
+// disagree the link wins, which is the whole point of the cutover; where a record has no link
+// (a trading-only grade) the select value is left exactly as it is.
+// GRADE_DRIFT collects the disagreements so they surface in Setup rather than passing silently.
+let GRADE_DRIFT=[];
+function applyGradeLinks(){
+  GRADE_DRIFT=[];
+  const pass=(rows,selFld,linkFld,label,refFld)=>{
+    (rows||[]).forEach(r=>{
+      const f=getFields(r); if(!f) return;
+      const linked=gradeOf(f,selFld,linkFld);
+      if(!linked) return;
+      const was=f[selFld]||'';
+      if(was && normGrade(was)!==normGrade(linked))
+        GRADE_DRIFT.push({table:label, ref:f[refFld]||r.id, was, now:linked});
+      f[selFld]=linked;
+    });
+  };
+  pass(D.stock, F.grade,   F.gradeLink,   'Stock',          F.batchNr);
+  pass(D.sales, F.slGrade, F.slGradeLink, 'Sales',          F.slRef);
+  pass(D.lines, F.lGrade,  F.lGradeLink,  'Dispatch Lines', F.lRef);
+  if(GRADE_DRIFT.length) console.warn('Grade link/select drift on '+GRADE_DRIFT.length+' record(s):', GRADE_DRIFT);
+}
 
 // --- Product/Grade vocabulary driven by the Lists table (Type='Grade') ---
 // gradeRecs() returns active grade rows; each is tagged with a Product (commodity).
@@ -1470,8 +1572,8 @@ async function loadAll(){
     // than one after another — total load time drops from the SUM of all round-trips to
     // roughly the slowest single table. (This also speeds up every post-save reload.)
     msg.textContent='Loading…';
-    const [stock,runs,dispatches,lines,costs,purchases,settings,sales,drying,lists] = await Promise.all([
-      api(T.stock,[F.stockRef,F.batchNr,F.supplier,F.contractNr,F.product,F.grade,
+    const [stock,runs,dispatches,lines,costs,purchases,settings,sales,drying,lists,grades] = await Promise.all([
+      api(T.stock,[F.stockRef,F.batchNr,F.supplier,F.contractNr,F.product,F.grade,F.gradeLink,
         F.cropYear,F.stockStatus,F.qualityStatus,F.totalWeight,F.uom,F.packType,F.packRef,F.nrPacks,
         F.receiptDate,F.dryDate,F.sizedDate,F.sortedDate,F.packedDate,F.comments,F.priorComments,F.varReason,F.prodStatus,
         F.dispatchedKg,F.availableKg,F.daysInStore,F.origin,F.runsProducing,F.gradeGroup,F.intakeCost,F.stockSrcDrying]),
@@ -1479,21 +1581,23 @@ async function loadAll(){
         F.inputGrade,F.inputWeight,F.outputWeight,F.lossKg,F.lossPct,F.runNotes,F.inputStock,F.outputStock].concat(OUT_F)),
       api(T.dispatches,[F.dRef,F.dBuyer,F.dContract,F.dTransporter,F.dTRef,
         F.dPackDate,F.dShipDate,F.dChecked,F.dStatus,F.dComments,F.dSaleLink]),
-      api(T.lines,[F.lRef,F.lBatch,F.lProduct,F.lGrade,F.lCrop,F.lPackType,
+      api(T.lines,[F.lRef,F.lBatch,F.lProduct,F.lGrade,F.lGradeLink,F.lCrop,F.lPackType,
         F.lPacks,F.lPerPack,F.lTotal,F.lTare,F.lGross,F.lDispatch,F.lStock]),
       api(T.costs,[F.cItem,F.cType,F.cApplies,F.cRate,F.cStage,F.cActive,F.cOrder,F.cNotes,F.cOrigin,F.cProduct]),
       api(T.purchases,[F.pRef,F.pSupplier,F.pInvoice,F.pProduct,F.pGrade,F.pCrop,
         F.pCost,F.pEtaDvd,F.pEtaPE,F.pTransporter,F.pTRef,F.pStatus,F.pLocation,F.pPushed,F.pPushedDate,F.pComments,
         F.pTotalNW,F.pPallets,F.pCartons,F.pNWUom,F.pTotalNWKg,F.pPackType,F.pCostCcy,F.pCostZar]),
       api(T.settings,[F.sSetting,F.sEmails,F.sEnabled,F.sApprovers,F.sCartonRate,F.sUsdRate]),
-      api(T.sales,[F.slRef,F.slBuyer,F.slContract,F.slInvoice,F.slShipDate,F.slProduct,F.slGrade,
+      api(T.sales,[F.slRef,F.slBuyer,F.slContract,F.slInvoice,F.slShipDate,F.slProduct,F.slGrade,F.slGradeLink,
         F.slUom,F.slQty,F.slPallets,F.slPrice,F.slLabels,F.slApproved,F.slCreated,F.slPlRef,F.slPushedDate,F.slComments,F.slCurrency,F.slDispLink]),
       api(T.drying,[F.drgRef,F.drgSupplier,F.drgInvoice,F.drgProduct,F.drgGrade,F.drgCrop,
         F.drgBefore,F.drgAfter,F.drgAt,F.drgDate,F.drgPushed,F.drgPushedDate,F.drgComments,F.drgPriorComments,F.drgVarReason,F.drgPurchaseRef,F.drgBatch]),
       api(T.lists,[F.lstName,F.lstType,F.lstActive,F.lstProduct,F.lstOrder]),
+      api(T.grades,[F.grdName,F.grdProduct,F.grdActive,F.grdOrder]),
     ]);
     D.stock=stock; D.runs=runs; D.dispatches=dispatches; D.lines=lines; D.costs=costs;
     D.purchases=purchases; D.settings=settings; D.sales=sales; D.drying=drying; D.lists=lists;
+    D.grades=grades; buildGradeIndex(); applyGradeLinks();
     await syncLists();
 
     document.getElementById('loading').style.display='none';
@@ -1589,21 +1693,176 @@ function renderDash(){
       '<div class="stat-val"'+(redLots.length?' style="color:#b23b3b"':'')+'>'+plural(redLots.length,'lot')+'</div>'+
       '<div class="stat-sub">'+(redLots.length?fmtT(redKg)+' · 2+ crop yrs':'none on hand')+'</div></div>';
 
-  // Grade mix across Sorted + Packed
-  const mix={};
-  D.stock.filter(r=>['Sorted','Packed'].includes(getFields(r)[F.stockStatus])).forEach(r=>{
-    const f=getFields(r), g=f[F.grade]||'—';
-    mix[g]=(mix[g]||0)+(+f[F.totalWeight]||0);
+  // Stage reconciliation — every column shows only work still OUTSTANDING at that
+  // stage. Anything pushed on to the next stage is excluded, so nothing is counted twice
+  // and no column includes completed work.
+  //   Intake (Unprocessed)    = stock at Intake or Sized  (not yet sorted)
+  //   Sorting (Awaiting Pack) = stock at Sorted           (sorted, not yet packed)
+  //   Packed (Awaiting Pick)  = stock at Packed           (packed, not yet picked)
+  //   Picking (Awaiting Disp) = dispatch-line kg on Draft/Confirmed dispatches
+  //   Hold                    = physically on site but NOT sellable (Quality Hold, or a
+  //                             quality status of To be Destroyed / Returned / Rejected)
+  //   Sales (Awaiting Pick)   = per-sale kg still owed = qty − kg already picked on THAT
+  //                             sale's own dispatch, floored at zero
+  // Shipped dispatches are complete and so have no column: the sale reads as fully picked
+  // and its stock has already left the Packed column.
+  //
+  // Hold is EXCLUSIVE of the stage columns. A packed-but-rejected lot used to sit in
+  // Packed and so counted as available for sale, which it is not. It now leaves the flow
+  // and appears in Hold, so Packed means "packed and sellable".
+  //
+  // Sales join Stock on the Grade Link record id where both sides have one, falling back
+  // to a normalised name. That removes the grade-name-drift class of mismatch.
+  const mix={}, sold={}, intk={}, sized={}, sort={}, pick={}, hold={};
+  const KLBL={};                                     // key → {p, g} for row labelling/sorting
+  const kKey=(p,g,linkArr)=>{
+    const l=linkArr;
+    const gk=(Array.isArray(l)&&l.length) ? 'id:'+(l[0].id||l[0]) : 'nm:'+normGrade(g);
+    const k=(p||'Other')+'~|~'+gk;
+    if(!KLBL[k]) KLBL[k]={p:p||'Other', g:g||''};
+    else if(!KLBL[k].g && g) KLBL[k].g=g;            // first non-blank name wins as the label
+    return k;
+  };
+  const HOLD_QUAL=['To be Destroyed','Returned by Buyer','Quality Rejected'];
+  // Sized is its own column: those lots are past sizing but not yet sorted, so they have no
+  // dependable grade and must not be pooled with In Intake under an "Await Sizing" label.
+  const STAGE={Intake:intk, Sized:sized, Sorted:sort, Packed:mix};
+  D.stock.forEach(r=>{
+    const f=getFields(r);
+    const st=f[F.stockStatus];
+    if(st==='Dispatched'||st==='Consumed') return;    // gone; outside the flow entirely
+    const flagged = st==='Quality Hold' || HOLD_QUAL.includes(f[F.qualityStatus]);
+    const bucket = flagged ? hold : STAGE[st];
+    if(!bucket) return;
+    const k=kKey(f[F.product],f[F.grade],f[F.gradeLink]);
+    bucket[k]=(bucket[k]||0)+(+f[F.totalWeight]||0);
   });
-  const rows=Object.entries(mix).sort((a,b)=>b[1]-a[1]);
-  const max=rows.length?rows[0][1]:1;
-  const tot=rows.reduce((a,r)=>a+r[1],0);
-  document.getElementById('mix-tot').textContent=fmtKg(tot)+' sellable';
-  document.getElementById('mix-bars').innerHTML = rows.length ? rows.map(([g,kg])=>
-    '<div class="bar-row"><div class="bar-lbl">'+esc(g)+'</div>'+
-    '<div class="bar-track"><div class="bar-fill" style="width:'+(kg/max*100).toFixed(1)+'%"></div></div>'+
-    '<div class="bar-val">'+fmtKg(kg)+'</div></div>').join('')
-    : '<div class="empty">No sorted or packed stock yet.</div>';
+  (D.sales||[]).forEach(r=>{
+    const f=getFields(r);
+    if(!f[F.slApproved]) return;                     // unapproved sales are not commitments
+    let q=+f[F.slQty]||0; if(!q) return;
+    if(isLb(f[F.slUom])) q*=KG_PER_LB;               // Sales qty can be captured in lb
+    // Net each sale against its OWN dispatch, not against picks of the same grade. Picking
+    // a substitute grade (an S4 order filled with S4L) used to credit the substitute's
+    // bucket and leave a phantom shortfall on the ordered grade, plus a negative Sales cell.
+    const p=salePick(f);
+    const owed = (p.status==='Shipped') ? 0 : Math.max(0, q-(+p.pickedKg||0));
+    if(!owed) return;
+    const k=kKey(f[F.slProduct],f[F.slGrade],f[F.slGradeLink]);
+    sold[k]=(sold[k]||0)+owed;
+  });
+  // Dispatch status lives on the header, so resolve each line's parent first.
+  const dStat={}; (D.dispatches||[]).forEach(d=>{dStat[d.id]=getFields(d)[F.dStatus]||'';});
+  (D.lines||[]).forEach(l=>{
+    const f=getFields(l), kg=+f[F.lTotal]||0; if(!kg) return;
+    const st=((f[F.lDispatch]||[]).map(x=>dStat[x.id||x]).find(Boolean))||'Draft';
+    if(st==='Shipped') return;                       // complete; already netted out of Sales
+    const k=kKey(f[F.lProduct],f[F.lGrade],f[F.lGradeLink]);
+    pick[k]=(pick[k]||0)+kg;
+  });
+
+  // Grade sort rank within Macadamias. Sub-grades stay as separate rows but sit
+  // together in their family slot (S4 before S4R before S4L, etc). Order the
+  // tests carefully: S1S must be matched before the looser S1 test.
+  const macRank=g=>{
+    const s=String(g||'');
+    if(/Wholes.*S0/i.test(s))            return 10;
+    if(/Wholes.*S1S/i.test(s))           return 21;
+    if(/Wholes.*S1/i.test(s))            return 20;
+    if(/Halves.*S4L/i.test(s))           return 32;
+    if(/Halves.*S4R/i.test(s))           return 31;
+    if(/Halves.*S4/i.test(s))            return 30;
+    if(/Powder/i.test(s))                return 40;
+    if(/Commercial.*Wholes/i.test(s))    return 50;
+    if(/Commercial.*Halves/i.test(s))    return 51;
+    if(/Pieces.*S6/i.test(s))            return 61;
+    if(/Pieces.*S7/i.test(s))            return 62;
+    if(/Pieces/i.test(s))                return 60;
+    return 900; // anything unrecognised falls to the end of the Mac block
+  };
+  // Named products lead in this order; any other product collects under "Other".
+  const PROD_ORDER=['Macadamias','Almonds','Peanuts'];
+  const prodRank=p=>{const i=PROD_ORDER.indexOf(p); return i<0?PROD_ORDER.length:i;};
+
+  // A row appears if it has packed stock OR a sales commitment, so a grade that is
+  // sold but not yet packed still shows (as a negative Net Available).
+  const groups={};
+  // Column order follows the physical flow (Intake → Sorting → Packed → Picking), then
+  // Hold, then the DEMAND side (Sales) beside the two answers (Net, Net + WIP). Sales used
+  // to sit in the middle of the stage columns, which read as though it were a stock stage.
+  const KEYS=[intk,hold,sized,sort,mix,pick,sold];
+  new Set(KEYS.flatMap(o=>Object.keys(o))).forEach(k=>{
+    const [ik,hd,sz,so,pkRaw,pc,sl]=KEYS.map(o=>+o[k]||0);
+    // Picking no longer flips a lot's status to Dispatched, so picked lots are STILL at
+    // status Packed and were being counted in both columns — and so counted as available
+    // to sell despite being committed to a dispatch. Packed is therefore shown net of
+    // Picking, keeping every column mutually exclusive as the rest of the table promises.
+    const pk=pkRaw-pc;
+    // In Stock is a ROLL-UP of Sorted + Packed + Picked, i.e. everything graded and on site.
+    // It is the one column that is not mutually exclusive with its neighbours, so it is
+    // styled apart (col-roll) to stop anyone adding the row across.
+    const inStock=so+pk+pc;
+    const v=[ik,hd,sz,so,pk,pc,inStock,sl];
+    if(!v.some(x=>x)) return;               // hide rows that are zero everywhere
+    const {p,g}=KLBL[k]||{p:'Other',g:''};
+    const grp=prodRank(p)<PROD_ORDER.length?p:'Other';
+    // In the Other bucket a blank grade is meaningless, so label by product.
+    const lbl=g||(grp==='Other'?p:'—');
+    // Net Avail = Packed (free) + Sorted − Sold. Sorted counts because it is already graded
+    // and awaits nothing but packing. In Intake, Sized and On Hold are deliberately EXCLUDED:
+    // the first two are not sorted so have no dependable grade, and On Hold is not sellable.
+    (groups[grp]=groups[grp]||[]).push({lbl,g,v,pk,net:pk+so-sl});
+  });
+  Object.keys(groups).forEach(grp=>{
+    groups[grp].sort(grp==='Macadamias'
+      ? (a,b)=>(macRank(a.g)-macRank(b.g))||(b.pk-a.pk)
+      : (a,b)=>b.pk-a.pk);
+  });
+
+  // Named products in PROD_ORDER, then "Other" last.
+  const grpRank=g=>g==='Other'?99:prodRank(g);
+  const ordered=Object.keys(groups).sort((a,b)=>(grpRank(a)-grpRank(b))||a.localeCompare(b));
+  const allRows=ordered.flatMap(g=>groups[g]);
+  // The first three columns are stock that CANNOT be sold yet — unsorted (so ungraded) or on
+  // hold — hence the solid rule after Sized. Sorted onwards is saleable or already committed.
+  // A second rule sits before Sold, which is demand rather than stock.
+  const HDRS=['In Intake<br><span class="th-sub">Await Sizing</span>',
+              'On Hold<br><span class="th-sub">Not Sellable</span>',
+              'Sized<br><span class="th-sub">Await Sort</span>',
+              'Sorted<br><span class="th-sub">Await Pack</span>',
+              'Packed<br><span class="th-sub">Free to Sell</span>',
+              'Picked<br><span class="th-sub">Await Dispatch</span>',
+              'In Stock<br><span class="th-sub">Sorted + Packed + Picked</span>',
+              'Sold'];
+  const SALEABLE_FROM=3, DEMAND_FROM=7, ROLLUP=6;
+  const dv=i=>(i===SALEABLE_FROM||i===DEMAND_FROM)?' col-split':(i===ROLLUP?' col-roll':'');
+  const NCOL=HDRS.length+2;                 // label + stage/demand columns + Net Avail
+  const sumCol=(rows,i)=>rows.reduce((a,r)=>a+r.v[i],0);
+  const tot=HDRS.map((_,i)=>sumCol(allRows,i));
+  const totNet=allRows.reduce((a,r)=>a+r.net,0);
+  const netCell=(v,cls)=>'<td class="col-r mono'+(cls?' '+cls:'')+'"'+(v<0?' style="color:#b23b3b;font-weight:700"':'')+'>'+fmtKg(v)+'</td>';
+  const cells=v=>v.map((x,i)=>'<td class="col-r mono'+dv(i)+'">'+(x?fmtKg(x):'—')+'</td>').join('');
+  document.getElementById('mix-bars').innerHTML = allRows.length
+    ? '<table class="dt"><thead><tr>'
+      + '<th>Product / Grade</th>'
+      + HDRS.map((h,i)=>'<th class="col-r'+dv(i)+'">'+h+'</th>').join('')
+      + '<th class="col-r">Net Avail<br><span class="th-sub">Sorted + Packed − Sold</span></th>'
+      + '</tr></thead><tbody>'
+      + ordered.map(grp=>{
+          const g=groups[grp];
+          return '<tr class="grp-hdr"><td colspan="'+NCOL+'">'+esc(grp)+'</td></tr>'
+            + g.map(r=>'<tr><td>'+esc(r.lbl)+'</td>'+cells(r.v)+netCell(r.net)+'</tr>').join('')
+            // Product subtotal, so each product block reconciles on its own.
+            + '<tr class="grp-sub"><td>'+esc(grp)+' total</td>'
+              + HDRS.map((_,i)=>'<td class="col-r mono'+dv(i)+'">'+fmtKg(sumCol(g,i))+'</td>').join('')
+              + netCell(g.reduce((a,r)=>a+r.net,0))+'</tr>'
+            // Breathing room between product blocks. Not a data row.
+            + '<tr class="grp-gap"><td colspan="'+NCOL+'"></td></tr>';
+        }).join('')
+      + '</tbody><tfoot><tr class="totals"><td>All products</td>'
+      + tot.map((x,i)=>'<td class="col-r mono'+dv(i)+'">'+fmtKg(x)+'</td>').join('')
+      + netCell(totNet)+'</tr></tfoot></table>'
+    : '<div class="empty">No stock or sales to reconcile.</div>';
 
   // Needs attention
   const attn=[];
@@ -1640,6 +1899,7 @@ function renderDash(){
 
   renderSales7();
   renderReadyToShip();
+  renderShip7Sub();
   renderPackTracker();
 }
 
@@ -1697,6 +1957,23 @@ function renderReadyToShip(){
   }).join('') : '<tr><td colspan="7" class="empty">Nothing picked and awaiting dispatch.</td></tr>';
 }
 
+// Combined header line for the Shipping < 7 Days panel: total across both halves, with
+// overdue called out. Runs after both bodies so it can read their own sub-lines' counts.
+function renderShip7Sub(){
+  const el=document.getElementById('ship7-sub'); if(!el) return;
+  const start=new Date(); start.setHours(0,0,0,0);
+  const horizon=new Date(start); horizon.setDate(start.getDate()+7);
+  const due=D.sales.filter(s=>{
+    const f=getFields(s), sd=f[F.slShipDate];
+    if(!sd||saleDone(f)) return false;
+    const d=new Date(sd); d.setHours(0,0,0,0); return d<=horizon;
+  });
+  const ready=D.dispatches.filter(d=>getFields(d)[F.dStatus]==='Confirmed');
+  const overdue=due.filter(s=>{const d=new Date(getFields(s)[F.slShipDate]); d.setHours(0,0,0,0); return d<start;}).length;
+  const n=due.length+ready.length;
+  el.textContent = n ? plural(n,'order')+(overdue?' · '+overdue+' overdue':'') : 'nothing due';
+}
+
 // Daily & weekly tons packed, cartons only, against a 2 T/day goal.
 const PACK_GOAL_T=2.0;
 function renderPackTracker(){
@@ -1718,16 +1995,19 @@ function renderPackTracker(){
     days.push({key, dt, t:byDay[key]||0}); }
   const maxT=Math.max(PACK_GOAL_T, ...days.map(d=>d.t), 0.1);
   const goalPct=(PACK_GOAL_T/maxT*100);
+  // Bars run left-to-right, one day per row. The goal marker is a vertical rule, positioned
+  // inside the track region only: 64px of label+gap to its left, 54px of value+gap to its right.
   daily.innerHTML =
-    '<div class="pack-goal" style="bottom:'+(goalPct*(158/180)).toFixed(1)+'px"><span class="pg-lbl">Goal '+PACK_GOAL_T.toFixed(1)+' T</span></div>'+
+    '<div class="pack-goal" style="left:calc(64px + (100% - 118px) * '+(goalPct/100).toFixed(4)+')">'
+      +'<span class="pg-lbl">Goal '+PACK_GOAL_T.toFixed(1)+' T</span></div>'+
     days.map(d=>{
-      const h=(d.t/maxT*100)*(158/180);
+      const w=d.t/maxT*100;
       const met=d.t>=PACK_GOAL_T;
       const lbl=d.dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
-      return '<div class="pack-col" title="'+esc(lbl)+': '+d.t.toFixed(2)+' T">'+
-        (d.t>0?'<div class="pc-val">'+d.t.toFixed(1)+'</div>':'')+
-        '<div class="pc-bar'+(met?' met':'')+'" style="height:'+Math.max(d.t>0?2:0,h).toFixed(1)+'px"></div>'+
-        '<div class="pc-lbl">'+esc(d.dt.toLocaleDateString('en-GB',{day:'2-digit'}))+'</div></div>';
+      return '<div class="pack-row'+(d.t>0?'':' zero')+'" title="'+esc(lbl)+': '+d.t.toFixed(2)+' T">'+
+        '<div class="pc-lbl">'+esc(lbl)+'</div>'+
+        '<div class="pc-track"><div class="pc-bar'+(met?' met':'')+'" style="width:'+(d.t>0?Math.max(1.5,w):0).toFixed(1)+'%"></div></div>'+
+        '<div class="pc-val">'+(d.t>0?d.t.toFixed(1)+' T':'—')+'</div></div>';
     }).join('');
   // Weekly rollup — ISO-ish weeks (Mon start), last 4 weeks.
   const wk={};
@@ -1749,7 +2029,7 @@ function renderPackTracker(){
     const range=w.mon.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+'–'+end.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
     const goalWeek=PACK_GOAL_T*5;
     const metPct=goalWeek>0?(w.t/goalWeek*100):0;
-    return '<div class="pack-wk"><div class="pw-lbl">Week of '+esc(range)+'</div>'+
+    return '<div class="pack-wk"><div class="pw-lbl">'+esc(range)+'</div>'+
       '<div class="pw-val">'+w.t.toFixed(2)+' T</div>'+
       '<div class="pw-sub">'+(w.workdays?w.avg.toFixed(2)+' T/active day · ':'')+metPct.toFixed(0)+'% of 5-day goal</div></div>';
   }).join('');
@@ -2365,11 +2645,87 @@ function fillSel(id,opts,def){
     '<option'+(o===def?' selected':'')+'>'+esc(o)+'</option>').join('');
 }
 
-// Next sequential MIX-#### batch, one past the highest already in Stock.
+// ---- MIX-#### batch allocation -------------------------------------------------
+// A batch number is reserved the moment it is written ANYWHERE, and Drying writes one
+// before any Stock line exists (the number only pulls through to Stock on push to
+// Intake). So an allocator that scans Stock alone will happily reissue a number that
+// Drying already holds — which is how three drying rows all ended up on MIX-0038.
+// Every allocation therefore scans Stock AND Drying, and the write paths re-scan
+// against LIVE server data rather than the cached snapshot, because two tabs (or one
+// tab left open while someone else captures) both hold a stale max otherwise.
+const MIX_RE=/^MIX-(\d+)$/i;
+
+// Every MIX number currently spoken for, from whichever record sets are passed in.
+function mixNumbersUsed(stock, drying){
+  const used=new Set();
+  const scan=(recs,fid)=>(recs||[]).forEach(r=>{
+    const m=MIX_RE.exec(String(getFields(r)[fid]||'').trim());
+    if(m) used.add(+m[1]);
+  });
+  scan(stock, F.batchNr);
+  scan(drying, F.drgBatch);
+  return used;
+}
+const mixLabel=n=>'MIX-'+String(n).padStart(4,'0');
+
+// Allocate `count` numbers past the highest in use. Gaps are deliberately NOT filled:
+// a gap usually means a record was deleted, and reusing its number would silently
+// bind new material to a retired batch's paper trail.
+function allocMix(used, count){
+  let mx=0; used.forEach(n=>{ if(n>mx) mx=n; });
+  return Array.from({length:count},(_,i)=>mixLabel(mx+1+i));
+}
+
+// Cached-data allocator — fine for pre-filling a form field as a suggestion.
 function nextMixBatch(){
-  let mx=0; const re=/^MIX-(\d+)$/i;
-  D.stock.forEach(r=>{ const m=re.exec(String(getFields(r)[F.batchNr]||'').trim()); if(m){ const n=+m[1]; if(n>mx) mx=n; } });
-  return 'MIX-'+String(mx+1).padStart(4,'0');
+  return allocMix(mixNumbersUsed(D.stock, D.drying), 1)[0];
+}
+
+// Live allocator — use this on every path that actually WRITES a batch number.
+// Re-reads just the two batch columns, so it is cheap enough to call per save.
+async function allocMixLive(count){
+  const [stock,drying]=await Promise.all([
+    api(T.stock,[F.batchNr]),
+    api(T.drying,[F.drgBatch])
+  ]);
+  return allocMix(mixNumbersUsed(stock, drying), count);
+}
+
+// Is this batch number already taken? Checks Stock and Drying together.
+// `skipDryId` lets the Drying editor ignore the row being edited.
+//
+// A MIX number identifies the DELIVERY, not the graded lot — so one delivery split into
+// Wholes / Halves / Pieces legitimately shares a number across several rows. Reusing a
+// number on a DIFFERENT delivery is the actual error. Each hit therefore carries the
+// supplier and date so the caller can tell those two cases apart instead of crying wolf
+// every time a delivery is captured grade by grade.
+function mixHits(v, skipDryId){
+  const key=String(v||'').trim().toLowerCase();
+  if(!key) return [];
+  const out=[];
+  (D.stock||[]).forEach(r=>{ const f=getFields(r);
+    if(String(f[F.batchNr]||'').trim().toLowerCase()===key)
+      out.push({where:'Stock', what:f[F.stockStatus]||'Stock',
+                supplier:f[F.supplier]||'', date:f[F.dryDate]||''}); });
+  (D.drying||[]).forEach(r=>{ if(r.id===skipDryId) return; const f=getFields(r);
+    if(String(f[F.drgBatch]||'').trim().toLowerCase()===key)
+      out.push({where:'Drying', what:'Drying'+(f[F.drgPushed]?' (pushed)':' (not yet pushed)'),
+                supplier:f[F.drgSupplier]||'', date:f[F.drgDate]||''}); });
+  return out;
+}
+const sameish=(a,b)=>String(a||'').trim().toLowerCase()===String(b||'').trim().toLowerCase();
+// Same supplier and same date ⇒ same delivery ⇒ sharing the number is correct.
+function mixHitsSplit(hits, supplier, date){
+  const same=hits.filter(h=>sameish(h.supplier,supplier) && sameish(h.date,date));
+  return {same, other:hits.filter(h=>!same.includes(h))};
+}
+function mixHitText(hits, supplier, date){
+  const {same,other}=mixHitsSplit(hits, supplier, date);
+  if(other.length) return {err:true, text:'Batch number already used by a DIFFERENT delivery — '
+    +other.length+' record(s): '+[...new Set(other.map(h=>(h.supplier||'?')+(h.date?' · '+h.date:'')))].join('; ')
+    +'. Pick another number, or add a suffix (-A, -B).'};
+  return {err:false, text:'Same delivery — '+same.length+' other row(s) on this batch ('
+    +[...new Set(same.map(h=>h.what))].join(', ')+'). Sharing the number is correct for a delivery split by grade.'};
 }
 
 function openIntake(){
@@ -2397,11 +2753,11 @@ function intakeDupCheck(){
   const v=document.getElementById('in-batch').value.trim().toLowerCase();
   const el=document.getElementById('in-dup');
   if(!v){ el.textContent=''; return; }
-  const hits=D.stock.filter(r=>String(getFields(r)[F.batchNr]||'').trim().toLowerCase()===v);
-  if(!hits.length){ el.textContent=''; return; }
-  const statuses=[...new Set(hits.map(r=>getFields(r)[F.stockStatus]))].join(', ');
-  el.className='mmsg err';
-  el.textContent='Batch already in the system — '+hits.length+' line(s) at '+statuses+'. Use a suffix (-A, -B) if this is a separate delivery of the same batch.';
+  const hits=mixHits(v);
+  if(!hits.length){ el.textContent=''; el.className='mmsg'; return; }
+  const v2=mixHitText(hits, document.getElementById('in-supplier').value, document.getElementById('in-dry').value);
+  el.className='mmsg '+(v2.err?'err':'');
+  el.textContent=v2.text;
 }
 
 function intakeWeightTouched(){ INTAKE_WEIGHT_TOUCHED=true; intakeHint(); }
@@ -2435,19 +2791,39 @@ async function intakeSave(again){
   if(!batch){ msg.className='mmsg err'; msg.textContent='Batch Nr is required.'; return; }
   if(kg<=0){ msg.className='mmsg err'; msg.textContent='Net weight must be greater than zero.'; return; }
 
-  const dup=D.stock.some(r=>String(getFields(r)[F.batchNr]||'').trim().toLowerCase()===batch.toLowerCase());
-  if(dup && !confirm('Batch "'+batch+'" already exists in the system. Create another line with the same batch number?')) return;
+  // Check LIVE, not the cached snapshot: the whole point of this guard is to catch a
+  // number that someone else (or another tab) claimed since this form was opened.
+  // Only a clash with a DIFFERENT delivery is an error — the same supplier and dry date
+  // sharing a number is one delivery captured grade by grade, which is correct.
+  msg.textContent='Checking batch number…';
+  let liveHits=[];
+  try{
+    const [ls,ld]=await Promise.all([
+      api(T.stock,[F.batchNr,F.stockStatus,F.supplier,F.dryDate]),
+      api(T.drying,[F.drgBatch,F.drgSupplier,F.drgDate])]);
+    const key=batch.toLowerCase();
+    ls.forEach(r=>{ const f=getFields(r); if(String(f[F.batchNr]||'').trim().toLowerCase()===key)
+      liveHits.push({what:f[F.stockStatus]||'Stock', supplier:f[F.supplier]||'', date:f[F.dryDate]||''}); });
+    ld.forEach(r=>{ const f=getFields(r); if(String(f[F.drgBatch]||'').trim().toLowerCase()===key)
+      liveHits.push({what:'Drying', supplier:f[F.drgSupplier]||'', date:f[F.drgDate]||''}); });
+  }catch(e){ liveHits=mixHits(batch); }   // offline/API hiccup — fall back to cached
+  msg.textContent='';
+  const clash=mixHitsSplit(liveHits,
+    document.getElementById('in-supplier').value, document.getElementById('in-dry').value).other;
+  if(clash.length && !confirm('Batch "'+batch+'" is already used by a different delivery ('
+      +[...new Set(clash.map(h=>(h.supplier||'?')+(h.date?' · '+h.date:'')))].join('; ')
+      +'). Create another line with the same batch number?')) return;
 
   b1.disabled=b2.disabled=true; b1.textContent='Saving…';
   try{
     const grade=document.getElementById('in-grade').value;
     const f={};
-    f[F.stockRef]=batch+'  ·  '+grade;
+    // Stock primary is now an Airtable formula (Batch Nr · Grade Link) — never write it.
     f[F.batchNr]=batch;
     f[F.supplier]=document.getElementById('in-supplier').value.trim();
     f[F.contractNr]=document.getElementById('in-contract').value.trim();
     f[F.product]=document.getElementById('in-product').value;
-    f[F.grade]=grade;
+    f[F.grade]=grade; f[F.gradeLink]=gradeLinkVal(grade);
     f[F.cropYear]=document.getElementById('in-crop').value;
     f[F.stockStatus]='Intake';
     f[F.qualityStatus]=document.getElementById('in-qual').value;
@@ -2557,11 +2933,13 @@ async function onImportSheet(input){
     const rows=await parseIntakeWorkbook(file);
     if(!rows.length){ hide(); toast('No data rows found in that sheet.','error'); return; }
 
-    // Auto-number blank batches: MIX-#### sequential after any existing MIX in Stock.
-    let mixMax=0; const re=/^MIX-(\d+)$/i;
-    D.stock.forEach(r=>{ const m=re.exec(String(getFields(r)[F.batchNr]||'').trim()); if(m){ const n=+m[1]; if(n>mixMax) mixMax=n; } });
-    let autoCount=0;
-    rows.forEach(r=>{ if(!r.batchNr){ r.batchNr='MIX-'+String(++mixMax).padStart(4,'0'); autoCount++; } });
+    // Auto-number blank batches from a LIVE scan of Stock + Drying, so the block we
+    // hand out cannot overlap numbers already reserved elsewhere.
+    show('Allocating batch numbers…');
+    const needAuto=rows.filter(r=>!r.batchNr);
+    const alloc=needAuto.length ? await allocMixLive(needAuto.length) : [];
+    needAuto.forEach((r,i)=>{ r.batchNr=alloc[i]; });
+    const autoCount=needAuto.length;
 
     const totKg=rows.reduce((a,r)=>a+(r.totalWeight||0),0);
     const holds=rows.filter(r=>impStockStatus(r.stockStatus)==='Quality Hold').length;
@@ -2575,12 +2953,11 @@ async function onImportSheet(input){
     show('Creating '+rows.length+' stock records…');
     const recs=rows.map(r=>{
       const f={};
-      f[F.stockRef]=r.grade ? r.batchNr+'  ·  '+r.grade : r.batchNr;
-      f[F.batchNr]=r.batchNr;
+      f[F.batchNr]=r.batchNr;   // primary label is a formula in Airtable now
       if(r.supplier)     f[F.supplier]=r.supplier;
       if(r.contractNr)   f[F.contractNr]=r.contractNr;
       if(r.product)      f[F.product]=r.product;
-      if(r.grade)        f[F.grade]=r.grade;
+      if(r.grade){       f[F.grade]=r.grade; f[F.gradeLink]=gradeLinkVal(r.grade); }
       if(r.cropYear)     f[F.cropYear]=r.cropYear;
       f[F.stockStatus]=impStockStatus(r.stockStatus);
       if(r.qualityStatus)f[F.qualityStatus]=r.qualityStatus;
@@ -2619,9 +2996,14 @@ function poolMeta(fs){
   const minDate=k=>{ const ds=fs.map(f=>f[k]).filter(Boolean).sort(); return ds[0]||null; };
   const batches=uniq(F.batchNr), suppliers=uniq(F.supplier), contracts=uniq(F.contractNr),
         products=uniq(F.product), grades=uniq(F.grade), crops=uniq(F.cropYear), quals=uniq(F.qualityStatus);
-  const batchLabel = batches.length<=3 ? batches.join(' + ') : batches[0]+' +'+(batches.length-1)+' more';
+  // batchLabel is for SCREEN ONLY — it truncates. batchValue is the lossless string and is
+  // the only one that may ever be written to a data field (Stock Batch Nr, Runs Batch),
+  // otherwise records end up literally reading "NEN-001 +4 more" and the other four
+  // batch references are lost from the data.
+  const batchValue = batches.join(' + ');
+  const batchLabel = batches.length<=3 ? batchValue : batches[0]+' +'+(batches.length-1)+' more';
   return {
-    batches, batchLabel,
+    batches, batchLabel, batchValue,
     supplier: suppliers.length===1?suppliers[0]:(suppliers.length?'Multiple':''),
     contractNr: contracts.length===1?contracts[0]:'',
     product: products[0]||null,
@@ -2764,7 +3146,7 @@ async function runSave(){
     // 1 — create the run
     const runFields={};
     runFields[F.runRef]=ref; runFields[F.runType]=type; runFields[F.runDate]=date;
-    runFields[F.runBatch]=pool.batchLabel; runFields[F.runSupplier]=pool.supplier;
+    runFields[F.runBatch]=pool.batchValue; runFields[F.runSupplier]=pool.supplier;
     runFields[F.runProduct]=pool.product; runFields[F.inputGrade]=pool.grade;
     runFields[F.inputWeight]=inKg; runFields[F.inputStock]=recs.map(r=>r.id);
     runFields[F.runNotes]=document.getElementById('run-notes').value||'';
@@ -2779,10 +3161,9 @@ async function runSave(){
     const poolVarReason=(recs.map(r=>getFields(r)[F.varReason]).find(Boolean))||'';
     const stockPayload=outs.map(o=>{
       const nf={};
-      nf[F.stockRef]=pool.batchLabel+'  ·  '+o.grade;
-      nf[F.batchNr]=pool.batchLabel; nf[F.supplier]=pool.supplier;
+      nf[F.batchNr]=pool.batchValue; nf[F.supplier]=pool.supplier;
       nf[F.contractNr]=pool.contractNr; nf[F.product]=pool.product;
-      nf[F.grade]=o.grade; nf[F.cropYear]=pool.cropYear;
+      nf[F.grade]=o.grade; nf[F.gradeLink]=gradeLinkVal(o.grade); nf[F.cropYear]=pool.cropYear;
       nf[F.stockStatus]=newStatus; nf[F.qualityStatus]=pool.qualityStatus;
       nf[F.totalWeight]=o.kg; nf[F.uom]='kg';
       if(poolPrior) nf[F.priorComments]=poolPrior;
@@ -3044,10 +3425,11 @@ async function packSave(){
       if(remainder<=0.001) patches.push({id:r.id,fields:{[F.stockStatus]:'Consumed',[F.comments]:((f[F.comments]||'')+'\nPacked '+fmtN(packed)+' kg'+(loss>0?' · '+fmtN(loss)+' kg packing loss':'')+' on '+date).trim()}});
       else patches.push({id:r.id,fields:{[F.totalWeight]:remainder}});
       const nf={};
-      nf[F.stockRef]=(f[F.batchNr]||'')+'  ·  '+(f[F.grade]||'');
       nf[F.batchNr]=f[F.batchNr]; nf[F.supplier]=f[F.supplier];
       nf[F.contractNr]=f[F.contractNr]; nf[F.product]=f[F.product];
       nf[F.grade]=f[F.grade]; nf[F.cropYear]=f[F.cropYear];
+      // carry the link itself, not a re-lookup, so the packed lot cannot drift from its source
+      nf[F.gradeLink]=(f[F.gradeLink]||[]).map(x=>x.id||x);
       nf[F.stockStatus]='Packed'; nf[F.qualityStatus]=f[F.qualityStatus];
       nf[F.totalWeight]=packed; nf[F.uom]='kg';
       nf[F.receiptDate]=f[F.receiptDate]; nf[F.dryDate]=f[F.dryDate]; nf[F.sortedDate]=f[F.sortedDate];
@@ -3377,7 +3759,7 @@ async function dispSave(){
 
     // Build lines from state (DM_SRC), not the DOM, so picks on lots hidden by the
     // header filters are still saved. Collect warnings — validate before any writes.
-    const lines=[], fullyOut=[], warns=[];
+    const lines=[], warns=[];
     let n=startN, newKg=0;
     DM_SRC.forEach(rec=>{
       const id=rec.id;
@@ -3390,13 +3772,15 @@ async function dispSave(){
       lf[F.lRef]=ref+'-'+String(n).padStart(2,'0');
       lf[F.lBatch]=f[F.batchNr]||''; lf[F.lProduct]=f[F.product]||null;
       lf[F.lGrade]=f[F.grade]||null; lf[F.lCrop]=f[F.cropYear]||null;
+      lf[F.lGradeLink]=(f[F.gradeLink]||[]).map(x=>x.id||x);   // inherit the lot's grade link
       lf[F.lPackType]=f[F.packType]||null; lf[F.lPacks]=p; lf[F.lPerPack]=w;
       // Gross Weight kg is a computed field on the Lines table — do not write it.
       lf[F.lDispatch]=[targetId]; lf[F.lStock]=[id];
       lines.push({fields:lf});
       newKg+=p*w;
-      const availKg=(f[F.availableKg]!=null)?+f[F.availableKg]:(+f[F.totalWeight]||0);
-      if(p*w >= availKg-0.001) fullyOut.push(id);
+      // NB: we deliberately do NOT flip stock to Dispatched here. Picking a lot does not
+      // move it off the floor — it is still physically in the store until the list ships.
+      // The flip now happens in dispatchNow(), keyed off the list reaching Shipped.
       // Warn-only: does picked stock match the sale's product/grade?
       if(tgt.product && f[F.product] && !gmatch(tgt.product,f[F.product]))
         warns.push('• Batch '+(f[F.batchNr]||'?')+' product "'+(f[F.product]||'')+'" ≠ sale "'+tgt.product+'"');
@@ -3427,9 +3811,6 @@ async function dispSave(){
     await apiPatchBatch(T.dispatches,[{id:targetId,fields:df}]);
     await apiPostBatch(T.lines,lines);
 
-    if(fullyOut.length){
-      await apiPatchBatch(T.stock, fullyOut.map(id=>({id,fields:{[F.stockStatus]:'Dispatched'}})));
-    }
     toast('Picking list '+ref+' — '+lines.length+' line(s) added.','success');
     closeM('disp-modal');
     clearSel();
@@ -3690,6 +4071,40 @@ function viewDispatchAction(id){
   const go=document.getElementById('ta-go'); go.disabled=false; go.textContent='Dispatch now';
   openM('todact-modal');
 }
+// Which stock lots have genuinely left the floor now that picking list `shipId` has shipped?
+// A lot only counts as Dispatched when BOTH hold:
+//   1. nothing of it is left available (fully picked), and
+//   2. every picking list that drew on it has shipped — otherwise part of the lot is still
+//      in the store waiting on another list, and marking it gone would hide real stock.
+// `shipId` is treated as shipped even though D.dispatches still holds the pre-patch cache.
+function stockNowDispatched(shipId){
+  const linkIds=v=>(v||[]).map(x=>x.id||x);
+  const dStatusOf={}; (D.dispatches||[]).forEach(d=>{ dStatusOf[d.id]=getFields(d)[F.dStatus]||''; });
+  const shippedDisp=id2=>id2===shipId || dStatusOf[id2]==='Shipped';
+  // stock id -> every dispatch that has picked it
+  const drawnBy={};
+  (D.lines||[]).forEach(l=>{ const lf=getFields(l);
+    linkIds(lf[F.lStock]).forEach(sid=>{
+      (drawnBy[sid]=drawnBy[sid]||new Set());
+      linkIds(lf[F.lDispatch]).forEach(did=>drawnBy[sid].add(did));
+    });
+  });
+  const mine=new Set();
+  (D.lines||[]).forEach(l=>{ const lf=getFields(l);
+    if(linkIds(lf[F.lDispatch]).includes(shipId)) linkIds(lf[F.lStock]).forEach(sid=>mine.add(sid));
+  });
+  const out=[];
+  mine.forEach(sid=>{
+    const rec=(D.stock||[]).find(r=>r.id===sid); if(!rec) return;
+    const f=getFields(rec);
+    if(f[F.stockStatus]==='Dispatched') return;
+    const avail=(f[F.availableKg]!=null)?+f[F.availableKg]:(+f[F.totalWeight]||0);
+    if(avail>0.001) return;                                  // part of the lot is still unpicked
+    if(![...(drawnBy[sid]||[])].every(shippedDisp)) return;   // another list still holds some
+    out.push(sid);
+  });
+  return out;
+}
 async function dispatchNow(id){
   const d=D.dispatches.find(x=>x.id===id); if(!d) return;
   const msg=document.getElementById('ta-msg');
@@ -3705,7 +4120,9 @@ async function dispatchNow(id){
   df[F.dStatus]='Shipped';
   try{
     await apiPatchBatch(T.dispatches,[{id,fields:df}]);
-    toast(getFields(d)[F.dRef]+' dispatched.','success');
+    const out=stockNowDispatched(id);
+    if(out.length) await apiPatchBatch(T.stock, out.map(sid=>({id:sid,fields:{[F.stockStatus]:'Dispatched'}})));
+    toast(getFields(d)[F.dRef]+' dispatched.'+(out.length?' '+out.length+' lot(s) marked Dispatched.':''),'success');
     closeM('todact-modal');
     await loadAll();
     renderToDispatch();
@@ -4935,9 +5352,9 @@ async function pushToIntake(){
   if(!confirm('Push '+recs.length+' purchase(s) to the Intake Register?\n\nA stock line is created for each, with a MIX-#### batch auto-assigned. Net Weight is left blank until the delivery is weighed.')) return;
   const btn=document.getElementById('pur-push'); btn.disabled=true; btn.textContent='Pushing…';
   try{
-    // Straight-to-intake lots get a sequential MIX-#### batch auto-assigned here.
-    let mxBatch=0; const reB=/^MIX-(\d+)$/i;
-    D.stock.forEach(s=>{ const m=reB.exec(String(getFields(s)[F.batchNr]||'').trim()); if(m){ const n=+m[1]; if(n>mxBatch) mxBatch=n; } });
+    // Straight-to-intake lots get a sequential MIX-#### batch, allocated from a LIVE
+    // scan of Stock + Drying so the block cannot collide with reserved numbers.
+    const batchAlloc=await allocMixLive(recs.length);
     const stockPayload=recs.map((r,idx)=>{
       const f=getFields(r), grade=f[F.pGrade]||'';
       const parts=[];
@@ -4949,8 +5366,9 @@ async function pushToIntake(){
       if(f[F.pEtaPE]) parts.push('ETA PE: '+f[F.pEtaPE]);
       if(f[F.pComments]) parts.push(f[F.pComments]);
       const sf={};
-      sf[F.stockRef]=(f[F.pSupplier]||'Purchase')+'  ·  '+grade+(f[F.pInvoice]?'  ·  '+f[F.pInvoice]:'');
-      sf[F.batchNr]='MIX-'+String(mxBatch+idx+1).padStart(4,'0');
+      // primary label is an Airtable formula now; the invoice ref survives in Comments above
+      sf[F.batchNr]=batchAlloc[idx];
+      if(grade) sf[F.gradeLink]=gradeLinkVal(grade);
       if(f[F.pRef]) sf[F.contractNr]=f[F.pRef];
       sf[F.supplier]=f[F.pSupplier]||'';
       sf[F.product]=f[F.pProduct]||'';
@@ -5251,7 +5669,8 @@ function renderDrying(){
       '</div>'+
       '<div class="btn-grp" id="dry-actions"><button class="btn btn-p" id="dry-push" disabled onclick="pushDryingToIntake()">▸ Push to Intake</button></div>'+
     '</div><div class="panel-bod flush"><div class="tw"><table class="dt">'+
-      '<thead><tr id="dry-head"></tr></thead><tbody id="dry-body"></tbody></table></div></div></div>';
+      '<thead><tr id="dry-head"></tr></thead><tbody id="dry-body"></tbody>'+
+      '<tfoot><tr class="totals" id="dry-foot"></tr></tfoot></table></div></div></div>';
   renderDryingBody();
 }
 
@@ -5290,7 +5709,32 @@ function renderDryingBody(){
       '<td class="ck" onclick="event.stopPropagation()"><input type="checkbox" '+(on?'checked':'')+' onchange="drySelOne(\''+r.id+'\',this.checked)"></td>'+
       cols.map(c=>'<td class="'+(c.num?'num ':'')+(c.cls||'')+'">'+c.cell(f)+'</td>').join('')+'</tr>';
   }).join('') : '<tr><td colspan="'+(cols.length+1)+'" style="text-align:center;padding:26px;color:var(--muted)">No drying batches'+((document.getElementById('dry-showpushed')&&document.getElementById('dry-showpushed').checked)?'':' awaiting intake')+'.</td></tr>';
+  renderDryingFoot(cols,rows);
   const b=document.getElementById('dry-push'); if(b) b.disabled=DSEL.size===0;
+}
+
+// Totals row for the drying table. Weight columns sum; the two variance columns are
+// recomputed FROM the totals rather than averaged, so a big batch weighs more than a small
+// one — averaging the per-row percentages would misstate the overall shrinkage.
+function renderDryingFoot(cols,rows){
+  const foot=document.getElementById('dry-foot'); if(!foot) return;
+  if(!rows.length){ foot.innerHTML=''; return; }
+  const fs=rows.map(getFields);
+  const sum=fn=>fs.reduce((a,f)=>a+(+fn(f)||0),0);
+  const cnw=sum(f=>dryContractKg(f)), wet=sum(f=>f[F.drgBefore]), dry=sum(f=>f[F.drgAfter]);
+  const anyCnw=fs.some(f=>dryContractKg(f)!=null);
+  // Same orientation as dryContractVsBeforePct: (wet − contract) / contract.
+  const vcbPct=cnw?((wet-cnw)/cnw*100):null;
+  const TOT={
+    batch:'<strong>Total · '+rows.length+'</strong>',
+    cnw:  anyCnw?fmt2(cnw):'<span class="sub">—</span>',
+    before:fmt2(wet),
+    vcb:  (anyCnw&&vcbPct!=null)?dryVarBadge(vcbPct):'<span class="sub">—</span>',
+    after:fmt2(dry),
+    loss: wet?dryLossBadge((wet-dry)/wet*100):'<span class="sub">—</span>',
+  };
+  foot.innerHTML='<td class="ck"></td>'+
+    cols.map(c=>'<td class="'+(c.num?'num ':'')+(c.cls||'')+'">'+(TOT[c.k]||'')+'</td>').join('');
 }
 
 function drySortCol(k){ if(DSORT.col===k) DSORT.dir=-DSORT.dir; else { DSORT.col=k; DSORT.dir=1; } renderDryingBody(); }
@@ -5359,11 +5803,11 @@ function dryDupCheck(){
   const el=document.getElementById('dr-dup'); if(!el) return;
   const v=(document.getElementById('dr-batch').value||'').trim().toLowerCase();
   if(!v){ el.textContent=''; el.className='mmsg'; return; }
-  const hits=D.stock.filter(r=>String(getFields(r)[F.batchNr]||'').trim().toLowerCase()===v);
+  const hits=mixHits(v, DRY_EDIT_ID);
   if(!hits.length){ el.textContent=''; el.className='mmsg'; return; }
-  const statuses=[...new Set(hits.map(r=>getFields(r)[F.stockStatus]))].join(', ');
-  el.className='mmsg err';
-  el.textContent='Batch already in the system — '+hits.length+' line(s) at '+statuses+'. Use a suffix (-A, -B) if separate.';
+  const v2=mixHitText(hits, document.getElementById('dr-supplier').value, document.getElementById('dr-date').value);
+  el.className='mmsg '+(v2.err?'err':'');
+  el.textContent=v2.text;
 }
 function dryModalRecalc(){
   const cnwEl=document.getElementById('dr-cnw'), vcwEl=document.getElementById('dr-vcw'), vwdEl=document.getElementById('dr-vwd');
@@ -5385,6 +5829,35 @@ async function drySave(again){
   msg.className='mmsg'; msg.textContent='';
   if(!supplier){ msg.className='mmsg err'; msg.textContent='Supplier is required.'; return; }
   const wasEdit=!!DRY_EDIT_ID;
+
+  // A drying row reserves its batch number before any Stock line exists, so this is the
+  // first place a collision can be introduced — check LIVE against Stock and Drying.
+  // Only a clash with a DIFFERENT delivery is a problem — see mixHits(). Rows sharing the
+  // number for the same supplier and date are the same delivery split by grade, and save
+  // without interruption.
+  const dryBatch=(document.getElementById('dr-batch').value||'').trim();
+  const dryDate=document.getElementById('dr-date').value;
+  if(dryBatch){
+    msg.textContent='Checking batch number…';
+    let hits=[];
+    try{
+      const [ls,ld]=await Promise.all([
+        api(T.stock,[F.batchNr,F.stockStatus,F.supplier,F.dryDate]),
+        api(T.drying,[F.drgBatch,F.drgSupplier,F.drgDate,F.drgPushed])]);
+      const key=dryBatch.toLowerCase();
+      ls.forEach(r=>{ const f2=getFields(r); if(String(f2[F.batchNr]||'').trim().toLowerCase()===key)
+        hits.push({what:f2[F.stockStatus]||'Stock', supplier:f2[F.supplier]||'', date:f2[F.dryDate]||''}); });
+      ld.forEach(r=>{ if(r.id===DRY_EDIT_ID) return; const f2=getFields(r);
+        if(String(f2[F.drgBatch]||'').trim().toLowerCase()===key)
+          hits.push({what:'Drying', supplier:f2[F.drgSupplier]||'', date:f2[F.drgDate]||''}); });
+    }catch(e){ hits=mixHits(dryBatch, DRY_EDIT_ID); }   // offline/API hiccup — fall back to cached
+    msg.textContent='';
+    const clash=mixHitsSplit(hits, supplier, dryDate).other;
+    if(clash.length && !confirm('Batch "'+dryBatch+'" is already used by a different delivery ('
+        +[...new Set(clash.map(h=>(h.supplier||'?')+(h.date?' · '+h.date:'')))].join('; ')
+        +').\n\nSave this drying batch with the same number anyway?')) return;
+  }
+
   b1.disabled=b2.disabled=true; b1.textContent='Saving…';
   try{
     const f={};
@@ -5467,7 +5940,8 @@ async function pushDryingToIntake(){
       if(f[F.drgAfter]!=null&&f[F.drgAfter]!=='') parts.push('After: '+fmt2(f[F.drgAfter])+' kg');
       if(f[F.drgComments]) parts.push(f[F.drgComments]);
       const sf={};
-      sf[F.stockRef]=(f[F.drgSupplier]||'Drying')+'  ·  '+grade+(f[F.drgInvoice]?'  ·  '+f[F.drgInvoice]:'');
+      // primary label is an Airtable formula now; the invoice ref survives in Comments above
+      if(grade) sf[F.gradeLink]=gradeLinkVal(grade);
       if(f[F.drgBatch]) sf[F.batchNr]=f[F.drgBatch];   // batch assigned at drying pulls through to Intake
       sf[F.stockSrcDrying]=srcId;   // back-link so later Drying edits can sync to this line
       if(f[F.drgPurchaseRef]) sf[F.contractNr]=f[F.drgPurchaseRef];
@@ -5960,6 +6434,7 @@ async function saleSave(again){
     const sd=document.getElementById('sa-shipdate').value; f[F.slShipDate]=sd||null;
     f[F.slProduct]=document.getElementById('sa-product').value;
     f[F.slGrade]=document.getElementById('sa-grade').value;
+    f[F.slGradeLink]=gradeLinkVal(f[F.slGrade]);
     f[F.slUom]=document.getElementById('sa-uom').value;
     const qty=document.getElementById('sa-qty').value; if(qty!=='') f[F.slQty]=+qty;
     const price=document.getElementById('sa-price').value; if(price!=='') f[F.slPrice]=+price;
